@@ -233,13 +233,22 @@ void loop() {
     }
   }
 
-  if (btnsState == 0 && buf != "") { // Nothing pressed
+  // Keys released; end of sequence
+  if (btnsState == 0 && buf != "") {
     processBuffer(String(buf));
     buf = "";
-  } else if (btnsState == 7 || btnsState == 11 || btnsState == 13 || btnsState == 14 || btnsState == 15) {
+  }
+
+  // 3 keys pressed; set mode to 'normal'
+  else if (btnsState == 7 || btnsState == 11 || btnsState == 13 ||
+      btnsState == 14 || btnsState == 15) {
     setMode(MODE_NORMAL, false);
+    buf = "";
     delay(250);
-  } else if (btnsState != 0 && !buf.endsWith(String(btnsState, HEX))) {
+  }
+
+  // Append new button states to the buffer
+  else if (btnsState != 0 && !buf.endsWith(String(btnsState, HEX))) {
     buf += String(btnsState, HEX);
   }
 }
